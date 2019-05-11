@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Wallpaper</title>
+    <link rel="stylesheet" href="main.css" /> 
+    <script type="text/javascript" src="variables.js"></script>
+    <script type="text/javascript" src="BassEvents.js"></script>
+    <script type="text/javascript" src="misc/functions.js"></script>
+    <script type="text/javascript" src="UserProperties.js"></script>
+    <script type="text/javascript" src="objects/particle.js"></script>
+    <script>
+
+         window.addEventListener('load', _ => {
+
+            canvas.height = window.innerHeight
+            canvas.width = window.innerWidth
+            document.body.appendChild(canvas)
+            
+            // Look for user preference changes and apply them
+            changeUserValues()            
+            window.wallpaperRegisterAudioListener(listener)
+            draw()
+        })
+    </script>
+</head>
+
+<body onmousemove="storeMouse(event)">
+    <label id="label" style="margin-top:100px; color:brown; z-index:55;position:relative"></label>
+</body>
+
+</html>
