@@ -63,7 +63,7 @@
 			{
 				"condition" : "bgImage.value",
 				"order" : 4.2000000000000002,
-				"text" : "Bass Image Reaction",
+				"text" : "Bass Image Shake",
 				"type" : "bool"
 			},
 			"bassParticle" : 
@@ -101,10 +101,38 @@
 				"type" : "slider",
 				"value" : 50
 			},
+			"blur" : 
+			{
+				"condition" : "bgImage.value",
+				"editable" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 5.1,
+				"text" : "Blur Intensity",
+				"type" : "slider",
+				"value" : 0
+			},
+			"saturation" : 
+			{
+				"condition" : "bgImage.value",
+				"editable" : true,
+				"max" : 1000,
+				"min" : 0,
+				"order" : 5.11,
+				"text" : "Saturation Amount",
+				"type" : "slider",
+				"value" : 0
+			},
 			"flip" : 
 			{
 				"order" : 9,
 				"text" : "Flip to top",
+				"type" : "bool"
+			},
+			"modern" : 
+			{
+				"order" : 9.1,
+				"text" : "Modern Bar Look",
 				"type" : "bool"
 			},
 			"grav" : 

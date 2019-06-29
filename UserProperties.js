@@ -33,7 +33,7 @@ function changeUserValues() {
             if (properties.bassAction) {
                 if (properties.bassAction.value !== "") {
                     bassBar = properties.bassAction.value
-                    checkUserBassEvent(properties.bassAction.value, moveBar, BAR_BASS_INDEX)
+                    checkUserBassEvent(properties.bassAction.value, shakeBar, BAR_BASS_INDEX)
                 }
             }
 
@@ -47,18 +47,14 @@ function changeUserValues() {
             // Particle bass action
             if (properties.bassParticle) {
                 if (properties.bassParticle.value !== "") {
-                    if(properties.bassParticle.value == true) {
-                        triggerParticleBass = particlesBassEvent
-                    } else {
-                        triggerParticleBass= function() {return 0}
+                        checkUserBassEvent(properties.bassParticle.value, particlesBassEvent, PART_BASS_INDEX)
+                        checkUserBassEvent(properties.bassParticle.value, changeAlpha, STATIC_BASS_INDEX)
                     }
-                }
             }
 
             // Particle vibration
             if (properties.Vibrate) {
                 if (properties.Vibrate.value !== "") {
-                    //bassParticle = properties.bassParticle.value
                     if(properties.Vibrate.value == true) {
                         vibrate = vibrateParticle
                     } else {
@@ -76,16 +72,30 @@ function changeUserValues() {
                 }
             }
 
+             // Picture blur amount
+            if (properties.blur) {
+                if (properties.blur.value !== "") {
+                    blur = properties.blur.value / 10
+                } else {
+                    blur = 0
+                }
+            }
+
+             // Picture saturation
+            if (properties.saturation) {
+                if (properties.saturation.value !== "") {
+                    saturation = properties.saturation.value
+                } else {
+                    saturation = 0
+                }
+            }
+
             // Bar's position (top or bottom screen)
             if (properties.flip) {                          // TODO: reduce variables
                 if (properties.flip.value == true) {
                     flipp = 1
-                    topBar = 1
-                    botBar = 0
                 } else {
                     flipp = -1
-                    topBar = 0
-                    botBar = 1
                 }
             }
 
@@ -96,6 +106,7 @@ function changeUserValues() {
                     customColor = customColor.map(function(c) {
                         return Math.ceil(c * 255);
                     });
+                    document.body.style.background = "rgb(" + customColor[0] + "," + customColor[1] + "," + customColor[2] +")"
                     HighVolColor = customColor;
                     volMap.delete(1)
                     volMap.set(1, HighVolColor)
@@ -151,27 +162,38 @@ function changeUserValues() {
                             cust = cust.map(function(c) {
                                 return Math.ceil(c * 255)
                             })
-                            document.body.style.background = 'rgba(' + cust + ',1)'
+                            div.style.background = 'rgba(' + cust + ',1)'
                         }
                     }
                 } else {
                     if (properties.customimage) {
                         if (properties.customimage.value != "") {
-                            document.body.style.background = 'rgba(0,0,0,0)'
+                            div.style.background = 'rgba(0,0,0,0)'
                             properties.customimage.value = properties.customimage.value.replace("%3A", ":")
-                            document.body.style.background = "url('" + properties.customimage.value + "')"
-                            document.body.style.backgroundRepeat = "no-repeat"
-                            document.body.style.backgroundPosition = "-" + LEFT_OFFSET + "px -" + TOP_OFFSET + "px"
-                            document.body.style.backgroundSize = "110% 110vh"
+                            div.style.background = "url('" + properties.customimage.value + "')"
+                            div.style.backgroundRepeat = "no-repeat"
+                            div.style.backgroundPosition = "-" + LEFT_OFFSET + "px -" + TOP_OFFSET + "px"
+                            div.style.backgroundSize = "110% 110vh"
                         }
                     }
                 }
             }
 
+            if (properties.modern) {
+                if (properties.modern.value) {
+                    bar.width = (setWidth / arrlen)
+                    bar.padding = 0
+                } else {
+                    bar.width = (setWidth / arrlen) - 1
+                    bar.padding = 1
+                }
+            }
+
+
             // Particle's base opacity
             if (properties.partOpacity) {
                 if (properties.partOpacity.value != "") { // Convert the custom color to be applied as a CSS style 
-                    partOpa = properties.partOpacity.value/100
+                    partOpa = properties.partOpacity.value / 100
                     diffPartOpa = 1 - partOpa
                 }
             }

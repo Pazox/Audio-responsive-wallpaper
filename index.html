@@ -12,12 +12,15 @@
     <script type="text/javascript" src="objects/particle.js"></script>
     <script>
 
-         window.addEventListener('load', _ => {
-
+        window.addEventListener('load', _ => {
+            funcArray[IMG_BASS_INDEX].push(imageEffects)
+            div.style.webkitFilter = "blur(100px)"
+            div.style.webkitFilter = "blur(0px)"
             canvas.height = window.innerHeight
             canvas.width = window.innerWidth
+            document.body.appendChild(div)
             document.body.appendChild(canvas)
-            
+
             // Look for user preference changes and apply them
             changeUserValues()            
             window.wallpaperRegisterAudioListener(listener)
@@ -27,7 +30,7 @@
 </head>
 
 <body onmousemove="storeMouse(event)">
-    <label id="label" style="margin-top:100px; color:brown; z-index:55;position:relative"></label>
+        <label id="label" style="margin-top:100px; color:brown; z-index:55;position:relative"></label>
 </body>
 
 </html>

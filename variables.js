@@ -15,7 +15,7 @@ const arrlen            = 128                       // Length of the input audio
 const LOW_VOL           = 0.3                       // Low volume
 const MED_VOL           = 0.43                      // Since you converted colors to points and not areas, this constant is not relevant and this is why the volMap is hashed accordinglly
 const MED_VOL_2         = 0.6                       // Higher volume
-const VOL_ARRAY         =   [[0, LOW_VOL],          // Array of areas divided by volumes
+const VOL_ARRAY         =   [[0, LOW_VOL],          // Array of areas divided by volume values
                             [LOW_VOL, MED_VOL],
                             [MED_VOL, MED_VOL_2],
                             [MED_VOL_2, 1]]
@@ -38,15 +38,15 @@ const INTENSITY_FACTOR  = 75                        // Used to calculate how muc
 const PART_BASS_INDEX   = 0                         // Bass particle functions index in funcArray
 const BAR_BASS_INDEX    = 1                         // Bass bar functions index in funcArray
 const IMG_BASS_INDEX    = 2                         // Bass image functions index in funcArray
+const STATIC_BASS_INDEX = 3                         // Bass static particle functions in funcArray
 
 //  Variables  //
+let saturate            = 1                         // amount of color saturation
 let verDir              = 0                         // Vertical movement of the image
 let horDir              = 0                         // Horizontal movement of the image
 let volAmpl             = AMP_DEF                   // Music amplification value 
-let topBar              = 0                         // Indicator of bar's position
-let botBar              = 0                         // Indicator of bar's position
 let flipp               = 1                         // Indicated if a bar has been flipped
-let funcArray           = [[], [], []]              // Array filled with functions that are executed when bass event occurs
+let funcArray           = [[], [], [], []]          // Array filled with functions that are executed when bass event occurs
 let customColor1                                    // Variable of LOW_VOL
 let customColor2                                    // Variable of MED_VOL
 let customColor3                                    // Variable of MED_VOL_2
@@ -54,6 +54,7 @@ let customColor4                                    // Variable of the highest v
 let vibrate                                         // Contains a function of particle vibration (by user prefrences)
 let triggerParticleBass                             // Contains the particle bass function (by user prefrences)
 let up                  = 0                         // Handles the particle bass events (responsible for the particle's speed and it's alpha)
+let blur                = 0                         // Image blur amount
 let rotation            = 0                         // Handles the bar's movement
 let userParticleAmount  = 0                         // Contains the % value of particles to create
 let shake               = 0                         // Responsible for bass bar and image movement
@@ -73,11 +74,12 @@ let prevprevAudio       = []                        // Containing the third audi
 let prevAudio           = []                        // Containing the second audio entry
 let audio               = []                        // Containing the first audio entry
 let volMap              = new Map()                 // Map that contains the volume contstants (LOW_VOL, MED_VOL ...) as keys and their corresponding color as value
-const bar               =  {                        // A JSON contains bar's properties
+let bar               =  {                        // A JSON contains bar's properties
                                 width: (setWidth / arrlen) - 1,
                                 height: 100 * BASE_MUL,
                                 padding: 1
                             }
 //canvas vars
+let div = document.createElement('div')
 const canvas = document.createElement('canvas')
 const context = canvas.getContext('2d')

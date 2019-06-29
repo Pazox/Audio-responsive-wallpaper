@@ -22,11 +22,10 @@ const listener = arr => {
     }
     let avg = sum / 6
 
-    if (BassOccurrence(audio[SHAKE_INDEX], audio[SHAKE_INDEX - 1], sum / 6)) {
-        if (shake == 0) {
-            shake = Math.floor(SHAKE_VAL * Math.sqrt(avg))
-        }
-        triggerParticleBass()
+    if (BassOccurrence(audio[SHAKE_INDEX], audio[SHAKE_INDEX - 1], avg)) {
+        shake = Math.floor(SHAKE_VAL * Math.sqrt(avg))
+        storedAvg = avg
+        up = UP_CONST
     }
     
 }
@@ -35,15 +34,12 @@ const listener = arr => {
 const draw = _ => {
                 context.clearRect(0, 0, window.innerWidth, window.innerHeight)
                 drawParticles()
-
                 context.globalAlpha = 1
-
+                
                 drawAudioBar()
-
                 if (shake > 0) {
                     shake--
                 }
-
                 rotation = mod(rotation, window.innerWidth) + moveSpeed
                 requestAnimationFrame(draw)
             }
@@ -88,11 +84,11 @@ function drawAudioBar() {
             context.fillStyle = 'rgb(' + volMap.get(0)[0] + ',' + volMap.get(0)[1] + ',' + volMap.get(0)[2] +')'
         }
        
-            funcArray[BAR_BASS_INDEX].forEach(function (func) {
-                x += func()
-            })
+        funcArray[BAR_BASS_INDEX].forEach(function (func) {
+            x += func()
+        })
 
-        context.fillRect(x, topBar + botBar * (canvas.height - bar.height * avgAudio), bar.width, bar.height * avgAudio)
+        context.fillRect(x, Math.sign(1 - flipp) * (canvas.height - bar.height * avgAudio), bar.width, bar.height * avgAudio)
 
         // Particle creation
 
@@ -103,7 +99,7 @@ function drawAudioBar() {
             } else if (!particleArray.hasOwnProperty(context.fillStyle)) {
                     particleArray[context.fillStyle] = []
             	}
-                particleArray[context.fillStyle].push(new particle(flipp * (bar.height * part - bar.height * prevAudio[i]), context.fillStyle, x, topBar * (bar.height * avgAudio) + botBar * (canvas.height - bar.height * avgAudio), BASE_PART_SIZE + (avgAudio * 20)))
+                particleArray[context.fillStyle].push(new particle(flipp * (bar.height * part - bar.height * prevAudio[i]), context.fillStyle, x, Math.sign(1 - flipp) * canvas.height + (flipp * bar.height * avgAudio), BASE_PART_SIZE + (avgAudio * 20)))
             
         }
     }
@@ -114,10 +110,13 @@ function drawParticles() {
 
 				// subtracts 1 from up if up is not 0
 	            if (up > 0) {
-                    up -= 1
+                    up -=  1
                 }
-                context.globalAlpha = partOpa + (diffPartOpa * up / UP_CONST)
+                context.globalAlpha = partOpa
 
+                funcArray[STATIC_BASS_INDEX].forEach(function (func) {
+                    func()
+                })
 
 	            // particle drawing
                 Object.entries(particleArray).forEach(([i, ar]) => {
@@ -152,7 +151,12 @@ function storeMouse(e) {
 	};
 }
 
-// Necessary for debugging (needs to uncomment the label in the body tag)
+// Useful for debugging
 function debug(value) {
     document.getElementById("label").innerHTML = value
+}
+
+// changes the particles' alpha when bass occurs
+function changeAlpha() {
+    context.globalAlpha += diffPartOpa * up / UP_CONST
 }

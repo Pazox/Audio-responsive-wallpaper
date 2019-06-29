@@ -18,8 +18,8 @@ var particle = class particle {
     move() {
         let len = Math.sqrt(Math.pow(mouse.clientY - this.posy, 2) + Math.pow(mouse.clientX - this.posx, 2))
         
-        this.posy += Math.round(this.velocity / 3 + (up * flipp / 2.5) / (Math.abs(this.velocity) / 10)) + this.cy / 3 + vibrate(len)
-        this.posx += Math.round((this.rand) * 2) + this.cx / 3 + vibrate(len)
+        this.posy += this.velocity / 3 + this.cy / 3 + vibrate(len)
+        this.posx += this.rand * 2 + this.cx / 3 + vibrate(len)
 
         // Mouse attractions
             if (grav && len > 10 && len < 300) {
